@@ -1,0 +1,25 @@
+.session-workers .btn {
+    padding: 2px;
+    margin: 1px;
+}
+
+.session-workers {
+    padding: 1px;
+    margin: 1px;
+}
+.session-workers li {
+    list-style: none;
+    padding: 5px;
+    margin: 2px;
+    border: 1px solid #ccc;
+}
+
+.session-workers li:hover {
+    border: 1px solid #000;
+}
+
+.worksess-first-today {
+    background-color: green;
+    color: white;
+    padding: 2px;
+}
