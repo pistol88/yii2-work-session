@@ -22,23 +22,24 @@ pistol88.worksess = {
         pistol88.worksess.sendData(url, link);
     },
     sendData: function(url, link) {
+        $('.worsess-error').remove();
         $.post(url, {ajax: true},
             function(json) {
                 if(json.result == 'fail') {
+                    $(link).after('<p class="worsess-error" style="color: red;">'+json.error+'</p>');
                     console.log(json.error);
                 }
                 else {
+                    var userId = $(link).data('user-id');
+
+                    if(userId) {
+                        $('.worksess-info'+userId).replaceWith(json.info);
+                    } else {
+                        $('.worksess-info').replaceWith(json.info);
+                    }
+                    
                     $(link).replaceWith(json.button);
                 }
-                
-                var userId = $(link).data('user-id');
-                
-                if(userId) {
-                    $('.worksess-info'+userId).replaceWith(json.info);
-                } else {
-                    $('.worksess-info').replaceWith(json.info);
-                }
-                
             }, "json");
     },
 };

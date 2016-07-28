@@ -38,7 +38,7 @@ class Info extends \yii\base\Widget
         $stop = strtotime($stop);
         
         if(date('d.m.Y') == date('d.m.Y', $start) && date('d.m.Y') == date('d.m.Y', $stop)) {
-            $sum = yii::$app->worksess->getHours($this->for);
+            $sum = yii::$app->worksess->getTime($this->for);
             $return = 'Последняя сессия: '.date('H:i', $start).' - '.date('H:i', $stop);
             if($sum) {
                 $return .= ' (общее время: '.$sum.')';

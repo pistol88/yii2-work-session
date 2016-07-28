@@ -60,7 +60,39 @@ class Session extends Component
         return SessionModel::findOne(['DATE_FORMAT(start, "%Y-%m-%d")' => date('Y-m-d')]);
     }
     
-    public function getHours($for = null, $date = null)
+    public function getTime($for = null, $date = null)
+    {
+        $sum = $this->getSeconds($for, $date);
+
+        return self::getDate($sum);
+    }
+    
+    public function getSessions($for = null, $date = null)
+    {
+        if(!$date) {
+            $date = date('Y-m-d');
+        }
+        
+        if($for) {
+            return UserSession::find()->where(['DATE_FORMAT(start, "%Y-%m-%d")' => $date, 'user_id' => $for->getId()])->all();
+        } else {
+            return SessionModel::find()->where(['DATE_FORMAT(start, "%Y-%m-%d")' => $date])->all();
+        }
+        
+        return $sum;
+    }
+    
+    //Общее число сотрудников за смену (день)
+    public function getWorkersCount($date = null)
+    {
+        if(empty($date)) {
+            $date = date('Y-m-d');
+        }
+        
+        return UserSession::find()->select('user_id')->distinct()->where(['DATE_FORMAT(start, "%Y-%m-%d")' => $date])->count();
+    }
+    
+    public function getSeconds($for = null, $date = null)
     {
         if(!$date) {
             $date = date('Y-m-d');
@@ -68,11 +100,21 @@ class Session extends Component
 
         if($for) {
             $sum = UserSession::find()->where(['DATE_FORMAT(start, "%Y-%m-%d")' => $date, 'user_id' => $for->getId()])->sum('stop_timestamp-start_timestamp');
+            if($sum === null) {
+                if($sess = UserSession::find()->where(['DATE_FORMAT(start, "%Y-%m-%d")' => $date, 'user_id' => $for->getId()])->one()) {
+                    $sum = time()-$sess->start_timestamp;
+                }
+            }
         } else {
             $sum = SessionModel::find()->where(['DATE_FORMAT(start, "%Y-%m-%d")' => $date])->sum('stop_timestamp-start_timestamp');
+            if($sum === null) {
+                if($sess = SessionModel::find()->where(['DATE_FORMAT(start, "%Y-%m-%d")' => $date])->one()) {
+                    $sum = time()-$sess->start_timestamp;
+                }
+            }
         }
-
-        return self::getDate($sum);
+        
+        return $sum;
     }
     
     private static function getDate($date)

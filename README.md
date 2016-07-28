@@ -56,6 +56,8 @@ php yii migrate --migrationPath=vendor/pistol88/yii2-work-session/migrations
     ]
 ``` 
 
+В модели пользователя подключить поведение pistol88\worksess\AttachSession, чтобы получать время работы через $user->getSessionTime($date)
+
 Управление сессиями по роуту worksess/session/current.	
 
 

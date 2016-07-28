@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php foreach($workers as $worker) { ?>
             <li class="row">
                 <div class="col-md-4">
-                    <p><strong><?=$worker->username;?></strong> <?php if($name = $worker->name) { ?>(<?=$name;?>)<?php } ?></p>
+                    <p><strong><?=$worker->name;?></strong></p>
                     <?=Info::widget(['for' => $worker]);?>
                 </div>
                 <div class="col-md-2"><?=ControlButton::widget(['for' => $worker]);?></div>
