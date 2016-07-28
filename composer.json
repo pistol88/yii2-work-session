@@ -30,6 +30,6 @@
         }
     },
     "extra": {
-        "bootstrap": "pistol88\\worksession\\Bootstrap"
+        "bootstrap": "pistol88\\workses\\Bootstrap"
     }
 }
