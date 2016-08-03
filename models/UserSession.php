@@ -17,7 +17,7 @@ class UserSession extends \yii\db\ActiveRecord
             [['user_id', 'start'], 'required'],
             [['start', 'stop'], 'string'],
             [['report'], 'string'],
-            [['user_id'], 'integer'],
+            [['user_id', 'session_id'], 'integer'],
         ];
     }
 
@@ -26,10 +26,16 @@ class UserSession extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'start' => 'Время начала',
+            'session_id' => 'Материнская сессия',
             'stop' => 'Время конца',
             'report' => 'Отчет',
             'user_id' => 'Пользователь',
         ];
+    }
+    
+    public function getSession()
+    {
+        return $this->hasOne(Session::className(), ['id' => 'session_id']);
     }
     
     public function beforeSave($insert)

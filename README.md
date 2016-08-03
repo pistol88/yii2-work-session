@@ -84,3 +84,8 @@ use pistol88\worksess\widgets\Info;
 ```php
 <?=ControlButton::widget(['for' => $worker]);?>
 ```
+
+Вывод визуализации рабочего дня сотрудников
+```php
+<?=SessionGraph::widget();?>
+```

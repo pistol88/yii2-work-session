@@ -1,0 +1,99 @@
+
+.worksess-first-today {
+    background-color: #d8ead8;
+    color: #080808;
+    padding: 5px;
+}
+
+.session-admin {
+    padding: 10px;
+}
+
+.worksession-graph {
+    width: 100%;
+}
+
+.worksession-graph td, .worksession-graph th {
+    text-align: center;
+    padding: 4px;
+}
+
+.worksession-graph td.worker-hour {
+    padding: 0px;
+}
+
+.worksession-graph th {
+    height: 54px;
+}
+
+.worksession-graph td {
+    min-height: 100px;
+    min-width: 40px;
+    position: relative
+}
+
+.worksession-graph td > div {
+    width: 100%;
+    height: 100%;
+    position: relative
+}
+
+.worksession-graph td.worker-hour div > div {
+    height: 100%;
+    width: 8.33333333%;
+    float: left;
+}
+
+.worksession-graph td > div > div.active {
+    background-color: #338a33;
+}
+
+.worksession-graph td.hour {
+}
+.worksession-graph td.current {
+    
+}
+
+.worksession-graph th.worker-name {
+    width: 180px;
+    text-align: left;
+}
+
+.worksession-graph th .worksess-many-today {
+    font-size: 11px;
+    font-weight: normal;
+}
+
+.worksession-graph td.control {
+    width: 130px;
+}
+
+.worksession-graph .worker-line:hover td {
+    background-color: #c0e2ff;
+}
+
+.worksession-graph .worker-line:hover th {
+    background-color: #c0e2ff;
+}
+
+.worksession-graph td .btn {
+    padding: 3px;
+    font-size: 15px;
+    width: 100%;
+}
+
+.worksession-graph .session_status {
+    border-bottom: 1px solid #000;
+}
+
+.worksession-graph .worksess-first-today {
+    width: 200px;
+}
+
+.worksession-graph .session_status {
+    text-align: left;
+}
+
+.worksession-graph thead td, .worksession-graph tfoot td {
+    background-color: #f4f4f4;
+}

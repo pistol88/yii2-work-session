@@ -17,18 +17,20 @@ class Session extends Component
     {
         if(!$for) {
             $model = new SessionModel;
+            $model->user_id = yii::$app->user->id;
         } else {
+            if(!$current = $this->soon()) {
+                return false;
+            }
             $model = new UserSession;
+            $model->session_id = $current->id;
             $model->user_id = $for->getId();
         }
 
-        if($today = $this->soon($for)) {
-            return false;
-        } else {
-            $model->start = date('Y-m-d H:i:s');
 
-            return $model->save();
-        }
+        $model->start = date('Y-m-d H:i:s');
+
+        return $model->save();
     }
     
     public function stop($for)
@@ -37,7 +39,14 @@ class Session extends Component
             return false;
         } else {
             $today->stop = date('Y-m-d H:i:s');
-
+            
+            if(!$for) {
+                foreach($today->userSessions as $userSession) {
+                    $userSession->stop = date('Y-m-d H:i:s');
+                    $userSession->save();
+                }
+            }
+            
             return $today->save();
         }
     }
@@ -90,6 +99,23 @@ class Session extends Component
         }
         
         return UserSession::find()->select('user_id')->distinct()->where(['DATE_FORMAT(start, "%Y-%m-%d")' => $date])->count();
+    }
+    
+    //Был ли работник на рабочем месте в эту секунду
+    public function hasWork($for, $timestamp = null)
+    {
+        if(!$timestamp) {
+            $timestamp = time();
+        }
+        
+        if($timestamp > time()) {
+            return false;
+        }
+
+        return UserSession::find()
+            ->select('id')
+            ->where('((stop_timestamp IS NULL OR stop_timestamp > :time) AND start_timestamp < :time) AND user_id = :user_id', [':user_id' => $for->id, ':time' => $timestamp])
+            ->count();
     }
     
     public function getSeconds($for = null, $date = null)

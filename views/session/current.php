@@ -4,12 +4,14 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use pistol88\worksess\widgets\ControlButton;
 use pistol88\worksess\widgets\Info;
+use pistol88\worksess\widgets\SessionGraph;
 
 $this->title = 'Рабочая смена';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="session-index">
+    
     <?php if(Yii::$app->session->hasFlash('success')) { ?>
         <div class="alert alert-success" role="alert">
             <?= Yii::$app->session->getFlash('success') ?>
@@ -21,10 +23,17 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     <?php } ?>
     
-    <h2>Смена</h2>
-    <?=Info::widget();?>
+    
+    
+    <div class="session-admin">
+        <h2>Смена</h2>
+        
+        <?=Info::widget();?>
 
-    <p><?=ControlButton::widget();?></p>
+        <?=ControlButton::widget();?>
+        
+        <?=SessionGraph::widget();?>
+    </div>
     
     <h2>Рабочие</h2>
     

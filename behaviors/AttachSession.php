@@ -20,4 +20,8 @@ class AttachSession extends Behavior
     {
         return yii::$app->worksess->getSeconds($this->owner, $date);
     }
+    
+    public function hasWork($timestamp) {
+        return yii::$app->worksess->hasWork($this->owner, $timestamp);
+    }
 }

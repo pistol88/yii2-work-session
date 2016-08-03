@@ -7,9 +7,12 @@ use yii;
 class Info extends \yii\base\Widget
 {
     public $for = null;
+    public $session = null;
     
     public function init()
     {
+        \pistol88\worksess\assets\WidgetAsset::register($this->getView());
+        
         return parent::init();
     }
 
@@ -21,38 +24,46 @@ class Info extends \yii\base\Widget
             $userId = $this->for->getId();
         }
         
-        if(yii::$app->worksess->soon($this->for)) {
-            $message = $this->date(yii::$app->worksess->soon($this->for)->start);
-        } elseif(yii::$app->worksess->today($this->for)) {
-            $message = $this->date(yii::$app->worksess->today($this->for)->start, yii::$app->worksess->today($this->for)->stop);
+        if($soon = yii::$app->worksess->soon($this->for)) {
+            $message = $this->date($soon);
+        } elseif($this->session && $this->for && $insess = yii::$app->worksess->hasWork($this->for)) {
+            $message = $this->date($today, false);
+        } elseif($today = yii::$app->worksess->today($this->for)) {
+            $message = $this->date($today);
         } else {
-            $message = 'Сегодня сессии не было';
+            $message = 'Cессии не было';
         }
         
         return Html::tag('div', Html::tag('p', $message), ['class' => 'worksess-info'.$userId]);
     }
     
-    public function date($start, $stop = false)
+    public function date($session, $toDay = true)
     {
-        $start = strtotime($start);
-        $stop = strtotime($stop);
+        if(!$session) {
+            return null;
+        }
+
+        $start = strtotime($session->start);
+        $stop = strtotime($session->stop);
         
-        if(date('d.m.Y') == date('d.m.Y', $start) && date('d.m.Y') == date('d.m.Y', $stop)) {
+        //Текущая сессия закончилась
+        if($session->stop_timestamp) {
             $sum = yii::$app->worksess->getTime($this->for);
             $return = 'Последняя сессия: '.date('H:i', $start).' - '.date('H:i', $stop);
             if($sum) {
                 $return .= ' (общее время: '.$sum.')';
             }
             
-            return Html::tag('span', $return, ['class' => 'worksess-many-today']);
-        } elseif(date('d.m.Y') == date('d.m.Y', $start)) {
-            return Html::tag('span', 'Сессия начата: '.date('H:i', $start), ['class' => 'worksess-first-today']);
+            $sessionInfo = Html::tag('p', $return, ['class' => 'worksess-many-today']);
+        //Текущая сессия продолжается
+        } else {
+            $sessionInfo = Html::tag('p', 'Сессия начата: '.date('H:i', $start), ['class' => 'worksess-first-today']);
+        }
+
+        if(!$this->for && $session->user_id && $session->user) {
+            $sessionInfo .= Html::tag('p', 'Администратор: '.$session->user->name, ['class' => 'worksess-administrator']);
         }
         
-        if($stop) {
-            return Html::tag('span', date('d.m.Y H:i', $start).' - '.date('d.m.Y H:i', $stop), ['class' => 'worksess-long']);
-        }
-        
-        return Html::tag('span', date('d.m.Y H:i', $start), ['class' => 'worksess-soon']);
+        return Html::tag('div', $sessionInfo, ['class' => 'session-info-widget']);
     }
 }

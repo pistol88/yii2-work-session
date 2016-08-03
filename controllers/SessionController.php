@@ -65,7 +65,7 @@ class SessionController extends Controller
             $button = null;
             $error = null;
 
-            if(yii::$app->worksess->soon($for)) {
+            if($current = yii::$app->worksess->soon($for)) {
                 $error = 'Необходимо завершить текущую сессию';
             } else {
                 if (yii::$app->worksess->start($for)) {

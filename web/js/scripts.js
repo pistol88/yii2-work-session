@@ -19,7 +19,9 @@ pistol88.worksess = {
         pistol88.worksess.sendData(url, link);
     },
     stop: function(url, link) {
-        pistol88.worksess.sendData(url, link);
+        if(confirm('Действительно?')) {
+            pistol88.worksess.sendData(url, link);
+        }
     },
     sendData: function(url, link) {
         $('.worsess-error').remove();
@@ -36,6 +38,7 @@ pistol88.worksess = {
                         $('.worksess-info'+userId).replaceWith(json.info);
                     } else {
                         $('.worksess-info').replaceWith(json.info);
+                        document.location.reload();
                     }
                     
                     $(link).replaceWith(json.button);
