@@ -41,6 +41,27 @@ class Session extends \yii\db\ActiveRecord
         return null;
     }
     
+    public function getDuration()
+    {
+        $worksess = yii::$app->worksess;
+        
+        $start = $this->start_timestamp;
+        $stop = $this->stop_timestamp;
+        
+        if(!$stop) {
+            $stop = time();
+        }
+        
+        return $worksess::getDate($stop-$start);
+    }
+    
+    public function getUsers()
+    {
+        $userModel = yii::$app->getModule('worksess')->userModel;
+        $userIds = $this->hasMany(UserSession::className(), ['session_id' => 'id'])->select('user_id')->distinct();
+        return $userModel::findAll(['id' => $userIds]);
+    }
+    
     public function getUserSessions()
     {
         return $this->hasMany(UserSession::className(), ['session_id' => 'id']);

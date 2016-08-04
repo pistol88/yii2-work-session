@@ -43,6 +43,10 @@ class Info extends \yii\base\Widget
             return null;
         }
 
+        if(!isset($session->start)) {
+            return null;
+        }
+        
         $start = strtotime($session->start);
         $stop = strtotime($session->stop);
         

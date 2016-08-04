@@ -17,7 +17,7 @@ class UserSession extends \yii\db\ActiveRecord
             [['user_id', 'start'], 'required'],
             [['start', 'stop'], 'string'],
             [['report'], 'string'],
-            [['user_id', 'session_id'], 'integer'],
+            [['user_id', 'session_id', 'start_timestamp', 'stop_timestamp'], 'integer'],
         ];
     }
 
@@ -30,14 +30,30 @@ class UserSession extends \yii\db\ActiveRecord
             'stop' => 'Время конца',
             'report' => 'Отчет',
             'user_id' => 'Пользователь',
+            'start_timestamp' => 'Время начала',
+            'stop_timestamp' => 'Время конца',
         ];
+    }
+    
+    public function getDuration()
+    {
+        $worksess = yii::$app->worksess;
+        
+        $start = $this->start_timestamp;
+        $stop = $this->stop_timestamp;
+
+        if(!$stop) {
+            $stop = time();
+        }
+        
+        return $worksess::getDate(($stop-$start));
     }
     
     public function getSession()
     {
         return $this->hasOne(Session::className(), ['id' => 'session_id']);
     }
-    
+
     public function beforeSave($insert)
     {
         if($this->start) {

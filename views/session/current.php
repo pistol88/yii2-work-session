@@ -22,16 +22,14 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Yii::$app->session->getFlash('fail') ?>
         </div>
     <?php } ?>
-    
-    
-    
+
     <div class="session-admin">
         <h2>Смена</h2>
         
         <?=Info::widget();?>
 
         <?=ControlButton::widget();?>
-        
+
         <?=SessionGraph::widget();?>
     </div>
     

@@ -7,6 +7,10 @@ use yii;
 class SessionGraph extends \yii\base\Widget
 {
     public $for = null;
+    public $hoursCount = 12;
+    public $session = null;
+    public $control = true;
+    public $workers = null;
     
     public function init()
     {
@@ -17,20 +21,33 @@ class SessionGraph extends \yii\base\Widget
 
     public function run()
     {
-        $workers = yii::$app->getModule('worksess')->getWorkersList();
-        $session = yii::$app->worksess->soon();
+        if($this->workers === null) {
+            $workers = yii::$app->getModule('worksess')->getWorkersList();
+        } else {
+            $workers = $this->workers;
+        }
+
+        $session = $this->session;
         
+        if(!$session) {
+            $session = yii::$app->worksess->soon();
+        } elseif($session->stop_timestamp) {
+            $this->hoursCount = ceil(($session->stop_timestamp-$session->start_timestamp)/60/60)+1;
+        }
+
         if(!$session) {
             return null;
         }
         
+        $date = date('Y-m-d', $session->start_timestamp);
+        
         $startHour = (int)date('H', $session->start_timestamp);
-        $stopHour = date('H');
         
         $i = 1;
         $h = $startHour;
         $hours = [];
-        while($i <= 8) {
+        
+        while($i <= $this->hoursCount) {
             $i++;
             $hours[] = $h;
             $h++;
@@ -39,6 +56,13 @@ class SessionGraph extends \yii\base\Widget
             }
         }
         
-        return $this->render('SessionGraph', ['workers' => $workers, 'session' => $session, 'hours' => $hours]);
+        return $this->render('SessionGraph',
+            [
+                'date' => $date,
+                'control' => $this->control,
+                'workers' => $workers,
+                'session' => $session,
+                'hours' => $hours
+            ]);
     }
 }

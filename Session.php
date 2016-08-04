@@ -63,10 +63,10 @@ class Session extends Component
     public function today($for = null)
     {
         if($for) {
-            return UserSession::findOne(['DATE_FORMAT(start, "%Y-%m-%d")' => date('Y-m-d'), 'user_id' => $for->getId()]);
+            return UserSession::findAll(['DATE_FORMAT(start, "%Y-%m-%d")' => date('Y-m-d'), 'user_id' => $for->getId()]);
         }
 
-        return SessionModel::findOne(['DATE_FORMAT(start, "%Y-%m-%d")' => date('Y-m-d')]);
+        return SessionModel::findAll(['DATE_FORMAT(start, "%Y-%m-%d")' => date('Y-m-d')]);
     }
     
     public function getTime($for = null, $date = null)
@@ -87,8 +87,11 @@ class Session extends Component
         } else {
             return SessionModel::find()->where(['DATE_FORMAT(start, "%Y-%m-%d")' => $date])->all();
         }
-        
-        return $sum;
+    }
+    
+    public function getSessionsBySessions($for = null, $session = null)
+    {
+        return UserSession::find()->where(['session_id' => $session->id, 'user_id' => $for->getId()])->all();
     }
     
     //Общее число сотрудников за смену (день)
@@ -113,9 +116,8 @@ class Session extends Component
         }
 
         return UserSession::find()
-            ->select('id')
             ->where('((stop_timestamp IS NULL OR stop_timestamp > :time) AND start_timestamp < :time) AND user_id = :user_id', [':user_id' => $for->id, ':time' => $timestamp])
-            ->count();
+            ->one();
     }
     
     public function getSeconds($for = null, $date = null)
@@ -143,7 +145,7 @@ class Session extends Component
         return $sum;
     }
     
-    private static function getDate($date)
+    public static function getDate($date)
     {
         $hours = floor($date/(60*60));
         

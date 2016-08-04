@@ -32,20 +32,24 @@
     position: relative
 }
 
-.worksession-graph td > div {
+.worksession-graph td > div.hourContainer {
     width: 100%;
     height: 100%;
-    position: relative
+    overflow: hidden;
+    position: relative;
+    background-color: #ebf4f9;
 }
 
 .worksession-graph td.worker-hour div > div {
     height: 100%;
-    width: 8.33333333%;
+    width: 1.666666667%;
     float: left;
+    min-height: 40px;
 }
 
 .worksession-graph td > div > div.active {
     background-color: #338a33;
+    min-height: 42px;
 }
 
 .worksession-graph td.hour {
@@ -55,8 +59,14 @@
 }
 
 .worksession-graph th.worker-name {
+    border-right: 1px solid #999;
     width: 180px;
     text-align: left;
+    
+}
+
+.worksession-graph th.worker-name > p.staffername {
+    color: #2929a7;
 }
 
 .worksession-graph th .worksess-many-today {
@@ -69,11 +79,11 @@
 }
 
 .worksession-graph .worker-line:hover td {
-    background-color: #c0e2ff;
+    background-color: #f4f4f4;
 }
 
 .worksession-graph .worker-line:hover th {
-    background-color: #c0e2ff;
+    background-color: #f4f4f4;
 }
 
 .worksession-graph td .btn {
