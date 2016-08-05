@@ -10,6 +10,14 @@ pistol88.worksess_graph = {
             }, 40000);
         }
     },
+    render: function(worker_id, start, stop) {
+        $('.worker-line-'+worker_id+' .hourContainer > div').each(function() {
+            var timestamp = parseInt($(this).data('timestamp'));
+            if(start < timestamp && stop > timestamp) {
+                $(this).addClass('active');
+            }
+        });
+    }
 };
 
 pistol88.worksess_graph.init();

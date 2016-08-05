@@ -95,13 +95,17 @@ class Session extends Component
     }
     
     //Общее число сотрудников за смену (день)
-    public function getWorkersCount($date = null)
+    public function getWorkersCount($session = null)
     {
-        if(empty($date)) {
-            $date = date('Y-m-d');
+        if(empty($session)) {
+            $session = $this->soon();
         }
         
-        return UserSession::find()->select('user_id')->distinct()->where(['DATE_FORMAT(start, "%Y-%m-%d")' => $date])->count();
+        if(!$session) {
+            return 0;
+        }
+        
+        return UserSession::find()->select('user_id')->distinct()->where(['session_id' => $session])->count();
     }
     
     //Был ли работник на рабочем месте в эту секунду

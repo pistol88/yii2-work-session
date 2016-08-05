@@ -51,7 +51,7 @@ class SessionGraph extends \yii\base\Widget
             $i++;
             $hours[] = $h;
             $h++;
-            if($h > 24) {
+            if($h >= 24) {
                 $h = '0';
             }
         }

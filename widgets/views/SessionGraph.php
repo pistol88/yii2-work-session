@@ -15,7 +15,7 @@ use yii\widgets\Pjax;
                 <th align="right" class="worker-name"><small>Сотрудник / Время работы</small></th>
                 <?php
                 foreach($hours as $h) {
-                    if($h == (int)date('H')) {
+                    if($h == (int)date('H') && $date == date('Y-m-d')) {
                         echo '<td class="current hour"><div id="current-hour"></div><strong>'.$h.':00</strong></td>'; 
                     } else {
                         echo '<td class="hour">'.$h.':00</td>';
@@ -29,31 +29,28 @@ use yii\widgets\Pjax;
             </tr>
         </thead>
         <?php foreach($workers as $worker) { ?>
-            <tbody class="worker-line">
+            <?php $cdate = $date; ?>
+            <tbody class="worker-line worker-line-<?=$worker->id;?>">
                 <tr>
                     <th class="worker-name">
                         <p class="staffername"><?=$worker->name;?></p>
                         <p><small><?php if($worker->category) { ?><?=$worker->category->name;?><?php } ?></small></p>
                     </th>
                     <?php
-                    foreach($hours as $h) {
+                    foreach($hours as $key => $h) {
                         $time = ' '.$h.':00';
 
                         $minutes = '';
-                        for($m = 0; $m <= 59; $m++) {
-                            $timestamp = strtotime($date.' '.$h.':'.$m);
+                        for($m = 0; $m <= 59; $m = $m+2) {
+                            $timestamp = strtotime($cdate.' '.$h.':'.$m);
 
-                            $active = '';
-                            
-                            $ws = $worker->hasWork($timestamp);
-                            
-                            if($timestamp > $session->start_timestamp && $ws) {
-                                $active = ' active';
-                            }
-
-                            $minutes .= '<div class="'.$active.'" data-timestamp="'.$timestamp.'">&nbsp;</div>';
+                            $minutes .= '<div title="'.$cdate.'" data-timestamp="'.$timestamp.'">&nbsp;</div>';
                         }
 
+                        if($key != 0 && $time == ' 0:00') {
+                            $cdate = date('Y-m-d', strtotime($cdate)+86400);
+                        }
+                        
                         echo '<td class="worker-hour"><div class="hourContainer">'.$minutes.'</div></td>';
                     }
                     ?>
@@ -75,7 +72,7 @@ use yii\widgets\Pjax;
                 <th align="right" class="worker-name">&nbsp;</th>
                 <?php
                 foreach($hours as $h) {
-                    if($h == (int)date('H')) {
+                    if($h == (int)date('H') && $date == date('Y-m-d')) {
                         echo '<td class="current hour"><div id="current-hour"></div><strong>'.$h.':00</strong></td>'; 
                     } else {
                         echo '<td class="hour">'.$h.':00</td>';
@@ -87,5 +84,40 @@ use yii\widgets\Pjax;
         </tfoot>
     </table>
 <?php } ?>
+
+<script>
+
+if (typeof pistol88 != "undefined"  && typeof pistol88.worksess_graph != "undefined") {
+    <?php foreach($workers as $worker) { ?>
+        //((stop_timestamp IS NULL OR stop_timestamp > :time) AND start_timestamp < :time)
+        <?php foreach($worker->getSessionsBySessions($session) as $userSession) { ?>
+            var start = <?=$userSession->start_timestamp;?>;
+            <?php if($userSession->stop_timestamp) { ?>
+                var stop = <?=$userSession->stop_timestamp;?>;
+            <?php } else { ?>
+                var stop = <?=time();?>; //current
+            <?php } ?>
+            pistol88.worksess_graph.render(<?=$worker->id;?>, start, stop);
+        <?php } ?>
+    <?php } ?>
+}
+
+window.onload = function() {
+    <?php foreach($workers as $worker) { ?>
+        //((stop_timestamp IS NULL OR stop_timestamp > :time) AND start_timestamp < :time)
+        <?php foreach($worker->getSessionsBySessions($session) as $userSession) { ?>
+            var start = <?=$userSession->start_timestamp;?>;
+            <?php if($userSession->stop_timestamp) { ?>
+                var stop = <?=$userSession->stop_timestamp;?>;
+            <?php } else { ?>
+                var stop = <?=time();?>; //current
+            <?php } ?>
+            pistol88.worksess_graph.render(<?=$worker->id;?>, start, stop);
+        <?php } ?>
+    <?php } ?>
+}
+
+</script>
+
 <?php Pjax::end(); ?>
 
