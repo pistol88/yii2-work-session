@@ -8,6 +8,8 @@ use yii\widgets\Pjax;
 <?php if(empty($workers)) { ?>
     <p>Работников нет.</p>
 <?php } else { ?>
+
+<div class="worksession-graph-container">
 <?php if($control) { ?><a href="" class="worsess-graph-update"> <i class="glyphicon glyphicon-refresh"></i> Обновить</a><?php } ?>
     <table class="worksession-graph table table-hover table-condensed">
         <thead>
@@ -84,7 +86,7 @@ use yii\widgets\Pjax;
         </tfoot>
     </table>
 <?php } ?>
-
+</div>
 <script>
 
 if (typeof pistol88 != "undefined"  && typeof pistol88.worksess_graph != "undefined") {
