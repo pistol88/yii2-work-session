@@ -107,8 +107,3 @@
 .worksession-graph thead td, .worksession-graph tfoot td {
     background-color: #f4f4f4;
 }
-
-.worksession-graph-container {
-    min-width: 400px;
-    overflow-x: scroll;
-}
