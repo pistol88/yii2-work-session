@@ -3,6 +3,7 @@ namespace pistol88\worksess;
 
 use pistol88\worksess\models\Session as SessionModel;
 use pistol88\worksess\models\UserSession;
+use pistol88\worksess\models\Schedule;
 use yii\base\Component;
 use yii;
 
@@ -13,11 +14,12 @@ class Session extends Component
         parent::init();
     }
     
-    public function start($for)
+    public function start($for = null, $shift = null)
     {
         if(!$for) {
             $model = new SessionModel;
             $model->user_id = yii::$app->user->id;
+            $model->shift = $shift;
         } else {
             if(!$current = $this->soon()) {
                 return false;
@@ -93,21 +95,7 @@ class Session extends Component
     {
         return UserSession::find()->where(['session_id' => $session->id, 'user_id' => $for->getId()])->all();
     }
-    
-    //Общее число сотрудников за смену (день)
-    public function getWorkersCount($session = null)
-    {
-        if(empty($session)) {
-            $session = $this->soon();
-        }
-        
-        if(!$session) {
-            return 0;
-        }
-        
-        return UserSession::find()->select('user_id')->distinct()->where(['session_id' => $session])->count();
-    }
-    
+
     //Был ли работник на рабочем месте в эту секунду
     public function hasWork($for, $timestamp = null)
     {
@@ -122,6 +110,36 @@ class Session extends Component
         return UserSession::find()
             ->where('((stop_timestamp IS NULL OR stop_timestamp > :time) AND start_timestamp < :time) AND user_id = :user_id', [':user_id' => $for->id, ':time' => $timestamp])
             ->one();
+    }
+    
+    //Общее число сотрудников в сессию (день)
+    public function getWorkersCount($session = null, $shift = null)
+    {
+        if(empty($session)) {
+            $session = $this->soon();
+        }
+        
+        if(!$session) {
+            return 0;
+        }
+        
+        return UserSession::find()->select('user_id')->distinct()->where(['session_id' => $session, 'shift' => $shift])->count();
+    }
+    
+    //Сотрудники, которые должны выйти по графику в этот день
+    public function getWorkers($date = null, $shiftId = null)
+    {
+        if(!$date) {
+            $date = date('Y-m-d');
+        }
+        
+        $userModel = yii::$app->getModule('worksess')->userModel;
+        
+        if($userIds = Schedule::find()->select('user_id')->distinct()->where(['date' => $date, 'shift' => $shiftId])->select('user_id')->distinct()) {
+            return $userModel::findAll(['id' => $userIds]);
+        } else {
+            return [];
+        }
     }
     
     public function getSeconds($for = null, $date = null)

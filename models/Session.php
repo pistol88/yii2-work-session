@@ -16,7 +16,7 @@ class Session extends \yii\db\ActiveRecord
         return [
             ['start', 'required'],
             [['start', 'stop'], 'string'],
-            [['report'], 'string'],
+            [['report', 'shift'], 'string'],
             [['user_id'], 'integer'],
         ];
     }
@@ -27,8 +27,26 @@ class Session extends \yii\db\ActiveRecord
             'id' => 'ID',
             'start' => 'Время начала',
             'stop' => 'Время конца',
+            'shift' => 'Сессия',
             'report' => 'Отчет',
         ];
+    }
+    
+    public function getShiftName()
+    {
+        if(empty($this->shift)) {
+            return null;
+        }
+        
+        $shifts = yii::$app->getModule('worksess')->shifts;
+
+        foreach($shifts as $shiftId => $shiftName) {
+            if($shiftId == $this->shift) {
+                return $shiftName;
+            }
+        }
+        
+        return null;
     }
     
     public function getUser()

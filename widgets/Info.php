@@ -65,7 +65,7 @@ class Info extends \yii\base\Widget
         }
 
         if(!$this->for && $session->user_id && $session->user) {
-            $sessionInfo .= Html::tag('p', 'Администратор: '.$session->user->name, ['class' => 'worksess-administrator']);
+            $sessionInfo .= Html::tag('p', $session->shiftName.' | Администратор: '.$session->user->name, ['class' => 'worksess-administrator']);
         }
         
         return Html::tag('div', $sessionInfo, ['class' => 'session-info-widget']);

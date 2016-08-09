@@ -22,6 +22,7 @@ class m160705_061313_Mass extends Migration {
                 'stop' => Schema::TYPE_DATETIME . "",
                 'report' => Schema::TYPE_TEXT . "",
                 'user_id' => Schema::TYPE_INTEGER . "(11)",
+                'shift' => Schema::TYPE_STRING . "(55)",
                 'start_timestamp' => Schema::TYPE_INTEGER . "(11)",
                 'stop_timestamp' => Schema::TYPE_INTEGER . "(11)",
                 ], $tableOptions);
@@ -37,6 +38,13 @@ class m160705_061313_Mass extends Migration {
                 'stop_timestamp' => Schema::TYPE_INTEGER . "(11)",
                 ], $tableOptions);
 
+            $this->createTable('{{%work_session_schedule}}', [
+                'id' => Schema::TYPE_PK . "",
+                'date' => Schema::TYPE_DATE . " NOT NULL",
+                'user_id' => Schema::TYPE_INTEGER . "(11)",
+                'shift' => Schema::TYPE_STRING . "(55)",
+                ], $tableOptions);
+            
             $this->addForeignKey(
                 'fk_session_id', '{{%work_session_user}}', 'session_id', '{{%work_session}}', 'id', 'CASCADE', 'CASCADE'
             );
@@ -51,6 +59,7 @@ class m160705_061313_Mass extends Migration {
         try {
             $this->dropTable('{{%work_session}}');
             $this->dropTable('{{%work_session_user}}');
+            $this->dropTable('{{%work_session_schedule}}');
         } catch (Exception $e) {
             echo 'Catch Exception ' . $e->getMessage() . ' ';
         }

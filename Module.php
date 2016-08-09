@@ -9,6 +9,10 @@ class Module extends \yii\base\Module
     public $userModel = 'common\models\User';
     public $adminModel = 'common\models\User';
     public $workers = null;
+    public $shifts = [
+        '07:00' => 'Дневная смена',
+        '19:00' => 'Ночная смена',
+    ];
     
     public function init()
     {        

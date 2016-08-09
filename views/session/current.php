@@ -30,21 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?=ControlButton::widget();?>
 
+        <hr />
+        
         <?=SessionGraph::widget();?>
     </div>
-    
-    <h2>Рабочие</h2>
-    
-    <ul class="session-workers">
-        <?php foreach($workers as $worker) { ?>
-            <li class="row">
-                <div class="col-md-4">
-                    <p><strong><?=$worker->name;?></strong></p>
-                    <?=Info::widget(['for' => $worker]);?>
-                </div>
-                <div class="col-md-2"><?=ControlButton::widget(['for' => $worker]);?></div>
-            </li>
-        <?php } ?>
-    </ul>
     
 </div>

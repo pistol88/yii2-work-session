@@ -16,13 +16,24 @@ class SessionGraph extends \yii\base\Widget
     {
         \pistol88\worksess\assets\SessionGraph::register($this->getView());
         
+        if(!$this->session) {
+            $this->session = yii::$app->worksess->soon();
+        }
+        
         return parent::init();
     }
 
     public function run()
     {
         if($this->workers === null) {
-            $workers = yii::$app->getModule('worksess')->getWorkersList();
+            $workers = [];
+            if($this->session) {
+                $workers = yii::$app->worksess->getWorkers(date('Y-m-d', strtotime($this->session->start)), $this->session->shift);
+            }
+            
+            if(!$workers) {
+                $workers = yii::$app->getModule('worksess')->getWorkersList();
+            }
         } else {
             $workers = $this->workers;
         }

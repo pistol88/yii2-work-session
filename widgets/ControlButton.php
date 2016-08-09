@@ -29,8 +29,20 @@ class ControlButton extends \yii\base\Widget
         
         if(yii::$app->worksess->soon($this->for)) {
             return Html::a($this->stopText, ['/worksess/session/stop', 'userId' => $userId], ['data-user-id' => $userId, 'class' => 'worksess-button worksess-stop btn btn-danger']);
-        } else {    
-            return Html::a($this->startText, ['/worksess/session/start', 'userId' => $userId], ['data-user-id' => $userId, 'class' => 'worksess-button worksess-start btn btn-success']); 
+        } else {
+            if($this->for) {
+                return Html::a($this->startText, ['/worksess/session/start', 'userId' => $userId], ['data-user-id' => $userId, 'class' => 'worksess-button worksess-start btn btn-success']);
+            } else {
+                $shifts = yii::$app->getModule('worksess')->shifts;
+
+                $buttons = [];
+
+                foreach($shifts as $shiftId => $shiftName) {
+                    $buttons[] = Html::a($this->startText . ' (' . $shiftName . ')', ['/worksess/session/start', 'userId' => $userId, 'shift' => $shiftId], ['data-shift' => $shiftId, 'data-user-id' => $userId, 'class' => 'worksess-button worksess-start btn btn-success']);
+                }
+
+                return implode(' ', $buttons);
+            }
        }
     }
 }
