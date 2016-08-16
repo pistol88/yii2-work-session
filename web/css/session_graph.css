@@ -50,6 +50,7 @@
 .worksession-graph td > div > div.active {
     background-color: #338a33;
     min-height: 42px;
+    cursor: pointer;
 }
 
 .worksession-graph td.hour {

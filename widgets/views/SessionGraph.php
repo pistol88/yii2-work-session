@@ -87,7 +87,10 @@ use yii\widgets\Pjax;
     </table>
 <?php } ?>
 </div>
+
 <script>
+
+var session_info_window_data = '<?=$infoWindowUrl;?>';
 
 if (typeof pistol88 != "undefined"  && typeof pistol88.worksess_graph != "undefined") {
     <?php foreach($workers as $worker) { ?>
@@ -114,7 +117,7 @@ window.onload = function() {
             <?php } else { ?>
                 var stop = <?=time();?>; //current
             <?php } ?>
-            pistol88.worksess_graph.render(<?=$worker->id;?>, start, stop);
+            pistol88.worksess_graph.render(<?=$worker->id;?>, start, stop, <?=$userSession->id;?>);
         <?php } ?>
     <?php } ?>
 }
@@ -123,3 +126,19 @@ window.onload = function() {
 
 <?php Pjax::end(); ?>
 
+<div class="modal fade" id="session-info-window" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Очет по сессии</h4>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?=yii::t('order', 'Close');?></button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,12 +9,20 @@ pistol88.worksess_graph = {
                 $('.worsess-graph-update').click();
             }, 40000);
         }
+        
+        $(document).on('click', '.worksession-graph td > div > div.active', this.openInfoWindow);
     },
-    render: function(worker_id, start, stop) {
+    openInfoWindow: function() {
+        $('#session-info-window').modal('show');
+        $.get(session_info_window_data, {userSessionId: $(this).data('user-session-id')}, function(data) {
+            $('#session-info-window .modal-body').html(data);
+        });
+    },
+    render: function(worker_id, start, stop, user_session_id) {
         $('.worker-line-'+worker_id+' .hourContainer > div').each(function() {
             var timestamp = parseInt($(this).data('timestamp'));
             if(start < timestamp && stop > timestamp) {
-                $(this).addClass('active');
+                $(this).addClass('active').data('user-session-id', user_session_id);
             }
         });
     }

@@ -35,6 +35,11 @@ class UserSession extends \yii\db\ActiveRecord
         ];
     }
     
+    public function getShiftName()
+    {
+        return $this->session->shiftName;
+    }
+    
     public function getDuration()
     {
         $worksess = yii::$app->worksess;

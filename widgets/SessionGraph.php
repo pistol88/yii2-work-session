@@ -2,15 +2,18 @@
 namespace pistol88\worksess\widgets;
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii;
 
 class SessionGraph extends \yii\base\Widget
 {
     public $for = null;
+    //Количество часов в смене
     public $hoursCount = 12;
     public $session = null;
     public $control = true;
     public $workers = null;
+    public $infoWindowUrl = null;
     
     public function init()
     {
@@ -18,6 +21,14 @@ class SessionGraph extends \yii\base\Widget
         
         if(!$this->session) {
             $this->session = yii::$app->worksess->soon();
+        }
+
+        if(!$this->infoWindowUrl) {
+            $this->infoWindowUrl = Url::toRoute(['/worksess/tools/info-window']);
+        }
+
+        if(!$this->hoursCount) {
+            $this->hoursCount = yii::$app->getModule('worksess')->hoursCount;
         }
         
         return parent::init();
@@ -73,7 +84,8 @@ class SessionGraph extends \yii\base\Widget
                 'control' => $this->control,
                 'workers' => $workers,
                 'session' => $session,
-                'hours' => $hours
+                'hours' => $hours,
+                'infoWindowUrl' => $this->infoWindowUrl,
             ]);
     }
 }

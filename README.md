@@ -47,6 +47,13 @@ php yii migrate --migrationPath=vendor/pistol88/yii2-work-session/migrations
             'adminRoles' => ['administrator'],
             //модуль пользователей
             'userModel' => 'common\models\User',
+            //Перечень смен
+            'shifts' = [
+                '07:00' => 'Дневная смена',
+                '19:00' => 'Ночная смена',
+            ],
+            //кол-во часов в смене
+            'hoursCount' => 12,
             //callback функция, позвращающая список работников
             'workers' => function() {
                 return \common\models\User::findAll(['status' => 2, 'id' => Yii::$app->authManager->getUserIdsByRole(['washer'])]);
@@ -58,7 +65,9 @@ php yii migrate --migrationPath=vendor/pistol88/yii2-work-session/migrations
 
 В модели пользователя подключить поведение pistol88\worksess\AttachSession, чтобы получать время работы через $user->getSessionTime($date)
 
-Управление сессиями по роуту worksess/session/current.	
+Управление сессиями по роуту: worksess/session/current.
+
+Управление расписанием выхода сотрудников по роуту: worksess/session/current.
 
 
 Виджеты
@@ -67,6 +76,7 @@ php yii migrate --migrationPath=vendor/pistol88/yii2-work-session/migrations
 <?php
 use pistol88\worksess\widgets\ControlButton;
 use pistol88\worksess\widgets\Info;
+use pistol88\worksess\widgets\SessionGraph;
 ?>
 ```
 
