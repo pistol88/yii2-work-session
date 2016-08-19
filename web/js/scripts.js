@@ -4,6 +4,7 @@ if (typeof pistol88 == "undefined" || !pistol88) {
 
 pistol88.worksess = {
     init: function() {
+        $(document).on('mouseenter','.worksess-table td', this.renderCross);
         $(document).on('click', '.worksess-button', this.control)
     },
     control: function() {
@@ -44,6 +45,15 @@ pistol88.worksess = {
                     $(link).replaceWith(json.button);
                 }
             }, "json");
+    },
+    renderCross: function () {
+        var table = $(this).parents('.worksess-table');
+        $('.worksess-table td').removeClass('hover');
+        var tr = $(this).parent('tr');
+        var Col = tr.find('td').index(this);
+
+        tr.find('td').addClass('hover');
+        $(table).find('tr').find('td:eq(' + Col + ')').addClass('hover');
     },
 };
 

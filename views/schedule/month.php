@@ -1,7 +1,8 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
-use kartik\select2\Select2;
+
+\pistol88\worksess\assets\BackendAsset::register($this);
 
 $daysCount = cal_days_in_month(CAL_GREGORIAN, $m, $y);
 
@@ -28,7 +29,7 @@ $shifts = $module->shifts;
     <?php } ?>
     
     <h1><?=$this->title;?></h1>
-
+        <p>Внимание! Изменения сохраняются только после нажатия кнопки "сохранить".</p>
         <?php
         $prevMonth = strtotime(date("$y-$m-01"))-864000;
         $nextMonth = strtotime(date("$y-$m-27"))+864000;
@@ -41,64 +42,53 @@ $shifts = $module->shifts;
         <form action="" method="post">
             <input type="hidden" name="<?= Yii::$app->request->csrfParam; ?>" value="<?= Yii::$app->request->csrfToken; ?>" />
             <div class="control" style="text-align: right;">
-                <input type="submit" name="submit-times" value="Сохранить" class="btn btn-submit" />
+                <input type="submit" name="submit-times" value="Сохранить" class="btn btn-primary" />
             </div>
-            <table class="table table-hover table-work-schedule">
-                <tr>
-                    <th width="60">День</th>
-                    <th>Сотрудники</th>
-                </tr>
-                <?php $prevStat = false; ?>
-                <?php foreach($monthDays as $d) { ?>
-                    <?php
-                    if($d <= 9) {
-                        $fd = "0$d";
-                    } else {
-                        $fd = $d;
-                    }
-                    ?>
+            <?php foreach($shifts as $shiftId => $shiftName) { ?>
+                <h3><?=$shiftName;?> (<?=$shiftId;?>)</h3>
+                <table class="worksess-table table table-hover table-work-schedule">
                     <tr>
-                        <td class="month">
-                            <p><strong <?php if("$y-$m-$fd" == date('Y-m-d')) echo 'style="color: red;"'; ?>><?=$d;?></strong></p>
-                            <p><?=$days['dayname_'.date("w", strtotime("$y-$m-$fd"))];?></p>
-                        </td>
-                        <td>
-                            <?php foreach($shifts as $shiftId => $shiftName) { ?>
-                                <?php
-                                $value = ArrayHelper::map(yii::$app->worksess->getWorkers("$y-$m-$fd", $shiftId), 'id', 'id');
-                                ?>
-                                <div>
-                                    <p><strong><?=$shiftName;?></strong></p>
-                                    <?=Select2::widget([
-                                        'attribute' => 'user_id['."$y-$m-$fd".']['.$shiftId.']',
-                                        'name' => 'user_id['."$y-$m-$fd".']['.$shiftId.']',
-                                        'value' => $value,
-                                        'language' => 'ru',
-                                        'maintainOrder' => true,
-                                        'data' => ArrayHelper::map($workers, 'id', 'name'),
-                                        'options' => ['multiple' => true, 'placeholder' => 'Выберите сотрудника ...'],
-                                        'pluginOptions' => [
-                                            'tags' => true,
-                                            'allowClear' => true,
-                                            'selectOptions' => ['class' => 'text-success'],
-                                            'unselectOptions' => ['class' => 'text-danger'],
-                                        ],
-                                    ]); ?>
-                                    <hr />
-                                </div>
-                            <?php } ?>
-                        </td>
+                        <td><strong>Сотрудник</strong></td>
+                        <?php foreach($monthDays as $d) { ?>
+                            <?php
+                            if($d <= 9) {
+                                $fd = "0$d";
+                            } else {
+                                $fd = $d;
+                            }
+                            ?>
+                            <td title="<?=$days['dayname_'.date("w", strtotime("$y-$m-$fd"))];?>"><?=$d;?></td>
+                        <?php } ?>
+
                     </tr>
-                <?php } ?>
-            </table>
+                    <?php foreach($workers as $staffer) { ?>
+                        <tr>
+                            <td class="staffer">
+                                <p><strong><?=$staffer->name;?></strong></p>
+                            </td>
+                            <?php foreach($monthDays as $d) { ?>
+                                <?php
+                                if($d <= 9) {
+                                    $fd = "0$d";
+                                } else {
+                                    $fd = $d;
+                                }
+                                ?>
+                                <td>
+                                    <?php
+                                    $value = ArrayHelper::map(yii::$app->worksess->getWorkers("$y-$m-$fd", $shiftId), 'id', 'id');
+                                    ?>
+                                    <div <?php if("$y-$m-$fd" == date('Y-m-d')) echo 'class="active"'; ?>>
+                                        <input <?php if(in_array($staffer->id, $value)) { ?>checked="checked"<?php } ?> name="user_id[<?=$y;?>-<?=$m;?>-<?=$d;?>][<?=$shiftId;?>][<?=$staffer->id;?>]" title="<?=$shiftName;?>" type="checkbox" name="workday" value="<?=$staffer->id;?>" />
+                                    </div>
+                                </td>
+                            <?php } ?>
+                        </tr>
+                    <?php } ?>
+                </table>
+            <?php } ?>
             <div class="control" style="text-align: right;">
-                <input type="submit" name="submit-times" value="Сохранить" class="btn btn-submit" />
+                <input type="submit" name="submit-times" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
 </div>
-
-<style>
-    .table-work-schedule tr:hover td {
-        background: #c0e2ff;
-    }
-</style>

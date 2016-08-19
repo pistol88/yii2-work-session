@@ -17,3 +17,8 @@
 .session-workers li:hover {
     border: 1px solid #000;
 }
+
+.worksess-table td:hover, .worksess-table td.betterhover, .worksess-table td.hover {
+    background-color:#c0e2ff;  
+    box-shadow:0 0 1px #006fcd;
+}

@@ -51,10 +51,14 @@ class ScheduleController extends Controller
     
     public function actionMonth($y = null, $m = null)
     {
+        $m = Html::encode($m);
+        $y = Html::encode($y);
+        
         if($data = yii::$app->request->post('user_id')) {
+            Schedule::deleteAll("date_format(date, '%Y%m') = :date", [':date' => $y.$m]);
+            
             foreach($data as $date => $shifts) {
                 foreach($shifts as $shiftId => $userIds) {
-                    Schedule::deleteAll(['date' => $date, 'shift' => $shiftId]);
                     if(is_array($userIds)) {
                         foreach($userIds as $userId) {
                             $model = new Schedule;
@@ -68,10 +72,9 @@ class ScheduleController extends Controller
             }
 
             yii::$app->session->setFlash('success', 'Данные успешно сохранены');
+            
+            return $this->redirect(['/worksess/schedule/month', 'y' => $y, 'm' => $m]);
         }
-        
-        $m = Html::encode($m);
-        $y = Html::encode($y);
 
         $model = new Schedule;
 
