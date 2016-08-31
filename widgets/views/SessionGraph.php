@@ -35,7 +35,7 @@ use yii\widgets\Pjax;
             <tbody class="worker-line worker-line-<?=$worker->id;?>">
                 <tr>
                     <th class="worker-name">
-                        <p class="staffername"><?=$worker->name;?></p>
+                        <p class="staffername"><a href="<?=Url::toRoute([yii::$app->getModule('worksess')->stafferProfileUrl, 'id' => $worker->id]);?>"><?=$worker->name;?></a></p>
                         <p><small><?php if($worker->category) { ?><?=$worker->category->name;?><?php } ?></small></p>
                     </th>
                     <?php

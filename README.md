@@ -48,7 +48,7 @@ php yii migrate --migrationPath=vendor/pistol88/yii2-work-session/migrations
             //модуль пользователей
             'userModel' => 'common\models\User',
             //Перечень смен
-            'shifts' = [
+            'shifts' => [
                 '07:00' => 'Дневная смена',
                 '19:00' => 'Ночная смена',
             ],

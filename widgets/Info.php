@@ -61,7 +61,7 @@ class Info extends \yii\base\Widget
             $sessionInfo = Html::tag('p', $return, ['class' => 'worksess-many-today']);
         //Текущая сессия продолжается
         } else {
-            $sessionInfo = Html::tag('p', 'Сессия начата: '.date('H:i', $start), ['class' => 'worksess-first-today']);
+            $sessionInfo = Html::tag('p', 'С '.date('d.m.Y H:i', $start), ['class' => 'worksess-first-today']);
         }
 
         if(!$this->for && $session->user_id && $session->user) {

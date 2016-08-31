@@ -14,6 +14,7 @@ class Module extends \yii\base\Module
         '07:00' => 'Дневная смена',
         '19:00' => 'Ночная смена',
     ];
+    public $stafferProfileUrl = '/staffer/staffer/view';
     
     public function init()
     {        
