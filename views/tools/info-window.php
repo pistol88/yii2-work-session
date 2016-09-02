@@ -1,7 +1,11 @@
+<?php
+use yii\helpers\Url;
+?>
 <h3> <?php if(isset($session->session->user)) { ?>Администратор <?=$session->session->user->name;?><?php } ?> </h3>
 <p>Смена: <?=$session->shiftName;?></p>
 <p>Старт: <?=date('d.m.Y H:i:s', $session->start_timestamp);?></p>
 <p>Стоп: <?php if($session->stop_timestamp) echo date('d.m.Y H:i:s', $session->stop_timestamp); else echo '-';?></p>
+<p>Редактировать: <a href="<?=Url::toRoute(['/worksess/user-session/update', 'id' => $session->id]);?>"><i class="glyphicon glyphicon-pencil"></i></a></p>
 <hr style="clear: both;" />
 
 <table class="table table-hover table-responsive">

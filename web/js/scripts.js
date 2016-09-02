@@ -18,10 +18,14 @@ pistol88.worksess = {
     },
     start: function(url, link) {
         pistol88.worksess.sendData(url, link);
+        
+        $(document).trigger("workSessionStart", this);
     },
     stop: function(url, link) {
         if(confirm('Действительно?')) {
             pistol88.worksess.sendData(url, link);
+            
+            $(document).trigger("workSessionStop", this);
         }
     },
     sendData: function(url, link) {

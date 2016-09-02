@@ -4,6 +4,7 @@ use pistol88\worksess\widgets\Info;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
 ?>
+
 <?php Pjax::begin(); ?>
 <?php if(empty($workers)) { ?>
     <p>Работников нет.</p>

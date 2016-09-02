@@ -9,7 +9,8 @@ pistol88.worksess_graph = {
                 $('.worsess-graph-update').click();
             }, 40000);
         }
-        
+
+        $(document).on('workSessionStart', function() { $('.worsess-graph-update').click(); })
         $(document).on('click', '.worksession-graph td > div > div.active', this.openInfoWindow);
     },
     openInfoWindow: function() {
@@ -21,7 +22,7 @@ pistol88.worksess_graph = {
     render: function(worker_id, start, stop, user_session_id) {
         $('.worker-line-'+worker_id+' .hourContainer > div').each(function() {
             var timestamp = parseInt($(this).data('timestamp'));
-            if(start < timestamp && stop > timestamp) {
+            if((start < timestamp+60 && stop > timestamp-60)) {
                 $(this).addClass('active').data('user-session-id', user_session_id);
             }
         });

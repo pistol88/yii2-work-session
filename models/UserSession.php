@@ -62,10 +62,12 @@ class UserSession extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if($this->start) {
+            $this->start = date('Y-m-d H:i:s', strtotime($this->start));
             $this->start_timestamp = strtotime($this->start);
         }
         
         if($this->stop) {
+            $this->stop = date('Y-m-d H:i:s', strtotime($this->stop));
             $this->stop_timestamp = strtotime($this->stop);
         }
         
