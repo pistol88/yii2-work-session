@@ -123,7 +123,7 @@ class Session extends Component
             return 0;
         }
         
-        return UserSession::find()->select('user_id')->distinct()->where(['session_id' => $session, 'shift' => $shift])->count();
+        return UserSession::find()->select('user_id')->distinct()->where(['session_id' => $session->id, 'shift' => $shift])->count();
     }
     
     //Сотрудники, которые должны выйти по графику в этот день
