@@ -99,3 +99,19 @@ use pistol88\worksess\widgets\SessionGraph;
 ```php
 <?=SessionGraph::widget();?>
 ```
+
+Триггеры
+---------------------------------
+В момент создания и завершения сессии можно выполнять какие-либо пользовательские сценарии, вынесенные в конфиг:
+
+'components' => [
+    'worksess' => [
+        'class' => 'pistol88\worksess\Session',
+        'on start' => function($event) {
+            //Сессия - $event->model;
+        },
+        'on stop' => function($event) {
+            //Сессия - $event->model;
+        }
+    ],
+]
