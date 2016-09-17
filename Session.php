@@ -4,11 +4,15 @@ namespace pistol88\worksess;
 use pistol88\worksess\models\Session as SessionModel;
 use pistol88\worksess\models\UserSession;
 use pistol88\worksess\models\Schedule;
+use pistol88\worksess\events\SessionEvent;
 use yii\base\Component;
 use yii;
 
 class Session extends Component
 {
+    const EVENT_SESSION_START = 'start';
+    const EVENT_SESSION_STOP = 'stop';
+    
     public function init()
     {
         parent::init();
@@ -24,15 +28,20 @@ class Session extends Component
             if(!$current = $this->soon()) {
                 return false;
             }
+            
             $model = new UserSession;
             $model->session_id = $current->id;
             $model->user_id = $for->getId();
         }
 
-
         $model->start = date('Y-m-d H:i:s');
 
-        return $model->save();
+        $return = $model->save();
+        
+        $sessionEvent = new SessionEvent(['model' => $return]);
+        $this->trigger(self::EVENT_SESSION_START, $sessionEvent);
+        
+        return $return;
     }
     
     public function stop($for)
@@ -49,7 +58,12 @@ class Session extends Component
                 }
             }
             
-            return $today->save();
+            $return = $today->save();
+            
+            $sessionEvent = new SessionEvent(['model' => $return]);
+            $this->trigger(self::EVENT_SESSION_STOP, $sessionEvent);
+            
+            return $return;
         }
     }
     
