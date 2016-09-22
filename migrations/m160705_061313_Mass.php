@@ -34,6 +34,7 @@ class m160705_061313_Mass extends Migration {
                 'user_id' => Schema::TYPE_INTEGER . "(11) NOT NULL",
                 'session_id' => Schema::TYPE_INTEGER . "(11) NOT NULL",
                 'report' => Schema::TYPE_TEXT . "",
+                'shift' => Schema::TYPE_STRING . "(55)",
                 'start_timestamp' => Schema::TYPE_INTEGER . "(11)",
                 'stop_timestamp' => Schema::TYPE_INTEGER . "(11)",
                 ], $tableOptions);
