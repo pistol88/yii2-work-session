@@ -10,7 +10,7 @@ pistol88.worksess_graph = {
             }, 40000);
         }
 
-        $(document).on('workSessionStart', function() { $('.worsess-graph-update').click(); })
+        $(document).on('workSessionUpdated', function() { $('.worsess-graph-update').click(); })
         $(document).on('click', '.worksession-graph td > div > div.active', this.openInfoWindow);
     },
     openInfoWindow: function() {

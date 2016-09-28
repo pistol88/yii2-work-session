@@ -29,14 +29,17 @@ pistol88.worksess = {
         }
     },
     sendData: function(url, link) {
+		$('.worksession-graph-container').css('opacity', '0.3');
         $('.worsess-error').remove();
         $.post(url, {ajax: true},
             function(json) {
+				$('.worksession-graph-container').css('opacity', '1');
                 if(json.result == 'fail') {
                     $(link).after('<p class="worsess-error" style="color: red;">'+json.error+'</p>');
                     console.log(json.error);
                 }
                 else {
+					$(document).trigger("workSessionUpdated", this);
                     var userId = $(link).data('user-id');
 
                     if(userId) {

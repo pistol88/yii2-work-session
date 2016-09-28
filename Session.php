@@ -28,6 +28,10 @@ class Session extends Component
             if(!$current = $this->soon()) {
                 return false;
             }
+
+            if($this->soon($for)) {
+                return false;
+            }
             
             $model = new UserSession;
             $model->session_id = $current->id;
@@ -140,6 +144,16 @@ class Session extends Component
         return UserSession::find()->select('user_id')->distinct()->where(['session_id' => $session->id, 'shift' => $shift])->count();
     }
     
+    //Общее число сотрудников за период времени
+    public function getWorkersCountByDate($session, $start = null, $stop = null)
+    {
+		if(!$stop | $stop == '0000-00-00 00:00:00') {
+			return UserSession::find()->select('user_id')->distinct()->where('session_id = :session_id AND start <= :start', [':start' => $start, ':session_id' => $session->id])->count();
+		}
+		
+        return UserSession::find()->select('user_id')->distinct()->where('session_id = :session_id AND start <= :start AND stop <= :stop', [':start' => $start, ':stop' => $stop, ':session_id' => $session->id])->count();
+    }
+	
     //Сотрудники, которые должны выйти по графику в этот день
     public function getWorkers($date = null, $shiftId = null)
     {
