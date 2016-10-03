@@ -120,14 +120,14 @@ class Session extends Component
         if(!$timestamp) {
             $timestamp = time();
         }
-        
+        //echo date('d.m.Y H:i:s', $timestamp)."<br />";
         if($timestamp > time()) {
             return false;
         }
 
         return UserSession::find()
             ->where('((stop_timestamp IS NULL OR stop_timestamp > :time) AND start_timestamp < :time) AND user_id = :user_id', [':user_id' => $for->id, ':time' => $timestamp])
-            ->one();
+            ->one(); 
     }
     
     //Общее число сотрудников в сессию (день)
@@ -141,7 +141,13 @@ class Session extends Component
             return 0;
         }
         
-        return UserSession::find()->select('user_id')->distinct()->where(['session_id' => $session->id, 'shift' => $shift])->count();
+        $query = UserSession::find()->select('user_id')->where(['session_id' => $session->id])->distinct();
+		
+		if(!empty($shift)) {
+			$query->where(['shift' => $shift]);
+		}
+		
+		return $query->count();
     }
     
     //Общее число сотрудников за период времени
