@@ -29,7 +29,7 @@ class ToolsController  extends Controller
     {
         $session = UserSession::findOne($userSessionId);
         
-        $stat = Order::getStatByDatePeriod($session->start, $session->stop);
+        $stat = yii::$app->order->getStatByDatePeriod($session->start, $session->stop);
         
         $orders = Order::findAll(['date' > $session->start, 'date' < $session->stop]);
         
