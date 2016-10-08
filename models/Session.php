@@ -84,21 +84,6 @@ class Session extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UserSession::className(), ['session_id' => 'id']);
     }
-    
-	public function getTime()
-	{
-		$worksess = yii::$app->worksess;
-		
-		$stop = $this->stop_timestamp;
-		
-		if(!$stop) {
-			$stop = time();
-		}
-		
-		$seconds = ($stop-$this->start_timestamp);
-		
-		return $worksess::getDate($seconds);
-	}
 	
     public function beforeSave($insert)
     {
