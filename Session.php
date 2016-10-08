@@ -168,9 +168,10 @@ class Session extends Component
             return [];
         }
     }
-    
+	
 	//Время работы сотрудника за сессию
-	public function getUserWorkTimeBySession($for = null, $session) {
+	public function getUserWorkTimeBySession($for = null, $session)
+	{
 		$sum =  $this->getSecondsBySession($for, $session);
 		
 		return self::getDate($sum);
