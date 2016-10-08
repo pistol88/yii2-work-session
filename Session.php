@@ -89,13 +89,6 @@ class Session extends Component
         return SessionModel::findAll(['DATE_FORMAT(start, "%Y-%m-%d")' => date('Y-m-d')]);
     }
     
-    public function getTime($for = null, $date = null)
-    {
-        $sum = $this->getSeconds($for, $date);
-
-        return self::getDate($sum);
-    }
-    
     public function getSessions($for = null, $date = null)
     {
         if(!$date) {
@@ -176,7 +169,23 @@ class Session extends Component
         }
     }
     
-    public function getSeconds($for = null, $date = null)
+	//Время работы сотрудника за сессию
+	public function getUserWorkTimeBySession($for = null, $session) {
+		$sum =  $this->getSecondsBySession($for, $session);
+		
+		return self::getDate($sum);
+	}
+	
+	//Время работы сотрудника за дату
+    public function getUserWorkTimeByDate($for = null, $date = null)
+    {
+        $sum = $this->getSecondsByDate($for, $date);
+
+        return self::getDate($sum);
+    }
+	
+	//Время работы сотрудника за дату
+    public function getSecondsByDate($for = null, $date = null)
     {
         if(!$date) {
             $date = date('Y-m-d');
@@ -200,7 +209,28 @@ class Session extends Component
         
         return $sum;
     }
-    
+	
+    public function getSecondsBySession($for = null, $session)
+    {
+        if($for) {
+            $sum = UserSession::find()->where(['session_id' => $session->id, 'user_id' => $for->getId()])->sum('stop_timestamp-start_timestamp');
+            if($sum === null) {
+                if($sess = UserSession::find()->where(['session_id' => $session->id, 'user_id' => $for->getId()])->one()) {
+                    $sum = time()-$sess->start_timestamp;
+                }
+            }
+        } else {
+            $sum = SessionModel::find()->where(['session_id' => $session->id])->sum('stop_timestamp-start_timestamp');
+            if($sum === null) {
+                if($sess = SessionModel::find()->where(['session_id' => $session->id])->one()) {
+                    $sum = time()-$sess->start_timestamp;
+                }
+            }
+        }
+        
+        return $sum;
+    }
+	
     public static function getDate($date)
     {
         $hours = floor($date/(60*60));
