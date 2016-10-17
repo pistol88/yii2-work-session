@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'start')->textInput() ?>
         </div>
         <div class="col-md-6">
-            <?php if($model->stop && $model->stop != '0000-00-00 00:00:00') { ?>
+            <?php if($model->stop && $model->stop != '0000-00-00 00:00:00' && $model->stop != '1970-01-01 05:00:00') { ?>
                 <?= $form->field($model, 'stop')->textInput() ?>
             <?php } ?>
         </div>

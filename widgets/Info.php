@@ -52,11 +52,7 @@ class Info extends \yii\base\Widget
         
         //Текущая сессия закончилась
         if($session->stop_timestamp) {
-            $sum = yii::$app->worksess->getTime($this->for);
             $return = 'Последняя сессия: '.date('H:i', $start).' - '.date('H:i', $stop);
-            if($sum) {
-                $return .= ' (общее время: '.$sum.')';
-            }
             
             $sessionInfo = Html::tag('p', $return, ['class' => 'worksess-many-today']);
         //Текущая сессия продолжается

@@ -32,6 +32,7 @@ class ScheduleController extends Controller
             ],
         ];
     }
+    
     public function actionIndex()
     {
         $model = new Schedule;
