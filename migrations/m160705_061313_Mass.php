@@ -30,7 +30,7 @@ class m160705_061313_Mass extends Migration {
             $this->createTable('{{%work_session_user}}', [
                 'id' => Schema::TYPE_PK . "",
                 'start' => Schema::TYPE_DATETIME . " NOT NULL",
-                'stop' => Schema::TYPE_DATETIME . " NOT NULL",
+                'stop' => Schema::TYPE_DATETIME . "",
                 'user_id' => Schema::TYPE_INTEGER . "(11) NOT NULL",
                 'session_id' => Schema::TYPE_INTEGER . "(11) NOT NULL",
                 'report' => Schema::TYPE_TEXT . "",
