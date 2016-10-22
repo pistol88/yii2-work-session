@@ -26,8 +26,6 @@ class Info extends \yii\base\Widget
         
         if($soon = yii::$app->worksess->soon($this->for)) {
             $message = $this->date($soon);
-        } elseif($this->session && $this->for && $insess = yii::$app->worksess->hasWork($this->for)) {
-            $message = $this->date($today, false);
         } elseif($today = yii::$app->worksess->today($this->for)) {
             $message = $this->date($today);
         } else {
