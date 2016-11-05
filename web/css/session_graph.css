@@ -108,3 +108,12 @@
 .worksession-graph thead td, .worksession-graph tfoot td {
     background-color: #f4f4f4;
 }
+
+.worksession-graph-container {
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.worksession-graph {
+    width: 1100px;
+}
