@@ -76,8 +76,14 @@ class Session extends \yii\db\ActiveRecord
     public function getUsers()
     {
         $userModel = yii::$app->getModule('worksess')->userModel;
+        
         $userIds = $this->hasMany(UserSession::className(), ['session_id' => 'id'])->select('user_id')->distinct();
-        return $userModel::findAll(['id' => $userIds]);
+        
+        if(yii::$app->has('organisation') && $organisation = yii::$app->organisation->get()) {
+            return $userModel::find()->where('(organisation_id = :organisation_id OR organisation_id IS NULL)', ['organisation_id' => $organisation->id])->andWhere(['id' => $userIds])->all();
+        } else {
+            return $userModel::find()->where(['id' => $userIds])->all();
+        }
     }
     
     public function getUserSessions()
