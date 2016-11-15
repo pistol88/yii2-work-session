@@ -102,7 +102,7 @@ class Session extends Component
         }
     }
     
-    public function getSessionsBySessions($for = null, $session = null)
+    public function getSessionsBySession($for = null, $session = null)
     {
         return UserSession::find()->where(['session_id' => $session->id, 'user_id' => $for->getId()])->all();
     }

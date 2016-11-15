@@ -21,9 +21,9 @@ class AttachSession extends Behavior
         return yii::$app->worksess->getSeconds($this->owner, $date);
     }
     
-    public function getSessionsBySessions($session)
+    public function getSessionsBySession($session)
     {
-        return yii::$app->worksess->getSessionsBySessions($this->owner, $session);
+        return yii::$app->worksess->getSessionsBySession($this->owner, $session);
     }
     
     public function hasWork($timestamp) {

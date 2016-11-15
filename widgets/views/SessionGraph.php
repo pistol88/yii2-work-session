@@ -96,7 +96,7 @@ var session_info_window_data = '<?=$infoWindowUrl;?>';
 if (typeof pistol88 != "undefined"  && typeof pistol88.worksess_graph != "undefined") {
     <?php foreach($workers as $worker) { ?>
         //((stop_timestamp IS NULL OR stop_timestamp > :time) AND start_timestamp < :time)
-        <?php foreach($worker->getSessionsBySessions($session) as $userSession) { ?>
+        <?php foreach($worker->getSessionsBySession($session) as $userSession) { ?>
             var start = <?=$userSession->start_timestamp;?>;
             <?php if($userSession->stop_timestamp) { ?>
                 var stop = <?=$userSession->stop_timestamp;?>;
@@ -111,7 +111,7 @@ if (typeof pistol88 != "undefined"  && typeof pistol88.worksess_graph != "undefi
 window.onload = function() {
     <?php foreach($workers as $worker) { ?>
         //((stop_timestamp IS NULL OR stop_timestamp > :time) AND start_timestamp < :time)
-        <?php foreach($worker->getSessionsBySessions($session) as $userSession) { ?>
+        <?php foreach($worker->getSessionsBySession($session) as $userSession) { ?>
             var start = <?=$userSession->start_timestamp;?>;
             <?php if($userSession->stop_timestamp) { ?>
                 var stop = <?=$userSession->stop_timestamp;?>;

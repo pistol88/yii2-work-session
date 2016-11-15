@@ -79,10 +79,10 @@ class Session extends \yii\db\ActiveRecord
         
         $userIds = $this->hasMany(UserSession::className(), ['session_id' => 'id'])->select('user_id')->distinct();
         
-        if(yii::$app->has('organisation') && $organisation = yii::$app->organisation->get()) {
-            return $userModel::find()->where('(organisation_id = :organisation_id OR organisation_id IS NULL)', ['organisation_id' => $organisation->id])->andWhere(['id' => $userIds])->all();
+        if(yii::$app->has('organization') && $organization = yii::$app->organization->get()) {
+            return $userModel::find()->where('(organization_id = :organization_id OR organization_id IS NULL)', ['organization_id' => $organization->id])->andWhere(['id' => $userIds]);
         } else {
-            return $userModel::find()->where(['id' => $userIds])->all();
+            return $userModel::find()->where(['id' => $userIds]);
         }
     }
     
