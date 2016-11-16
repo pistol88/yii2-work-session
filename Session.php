@@ -101,7 +101,12 @@ class Session extends Component
             return SessionModel::find()->where(['DATE_FORMAT(start, "%Y-%m-%d")' => $date])->all();
         }
     }
-    
+
+    public function getUserSessions($userId)
+    {
+        return UserSession::find()->where(['user_id' => $userId]);
+    }
+
     public function getSessionsBySession($for = null, $session = null)
     {
         return UserSession::find()->where(['session_id' => $session->id, 'user_id' => $for->getId()])->all();
