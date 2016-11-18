@@ -65,6 +65,9 @@ $shifts = $module->shifts;
                         <tr>
                             <td class="staffer">
                                 <p><strong><?=$staffer->name;?></strong></p>
+                                <?php if($cat = $staffer->category) { ?>
+                                    <p><small><?=$cat->name;?></small></p>
+                                <?php } ?>
                             </td>
                             <?php foreach($monthDays as $d) { ?>
                                 <?php
