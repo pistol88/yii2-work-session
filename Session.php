@@ -42,7 +42,7 @@ class Session extends Component
 
         $return = $model->save();
         
-        $sessionEvent = new SessionEvent(['model' => $return]);
+        $sessionEvent = new SessionEvent(['model' => $model]);
         $this->trigger(self::EVENT_SESSION_START, $sessionEvent);
         
         return $return;
@@ -64,7 +64,7 @@ class Session extends Component
             
             $return = $today->save();
             
-            $sessionEvent = new SessionEvent(['model' => $return]);
+            $sessionEvent = new SessionEvent(['model' => $today]);
             $this->trigger(self::EVENT_SESSION_STOP, $sessionEvent);
             
             return $return;
