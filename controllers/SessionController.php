@@ -56,6 +56,13 @@ class SessionController extends Controller
                 yii::$app->session->setFlash('fail', 'Необходимо завершить текущую сессию');
             } else {
                 if (yii::$app->worksess->start($for, $shift)) {
+                    if(!$for) {
+                        foreach($this->module->getWorkersList() as $worker) {
+                            if($worker->user_id == yii::$app->user->id) {
+                                yii::$app->worksess->start($worker, $shift);
+                            }
+                        }
+                    }
                     yii::$app->session->setFlash('success', 'Сессия успешно стартовала');
                 } else {
                     yii::$app->session->setFlash('fail', 'Не удалось начать сессию');
@@ -70,6 +77,13 @@ class SessionController extends Controller
                 $error = 'Необходимо завершить текущую сессию';
             } else {
                 if (yii::$app->worksess->start($for, $shift)) {
+                    if(!$for) {
+                        foreach($this->module->getWorkersList() as $worker) {
+                            if($worker->user_id == yii::$app->user->id) {
+                                yii::$app->worksess->start($worker, $shift);
+                            }
+                        }
+                    }
                     $result = 'success';
                     $button = ControlButton::widget(['for' => $for]);
                 } else {
