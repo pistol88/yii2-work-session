@@ -41,9 +41,11 @@ class Session extends Component
         $model->start = date('Y-m-d H:i:s');
 
         $return = $model->save();
-        
-        $sessionEvent = new SessionEvent(['model' => $model]);
-        $this->trigger(self::EVENT_SESSION_START, $sessionEvent);
+
+        if(!$for) {
+            $sessionEvent = new SessionEvent(['model' => $model]);
+            $this->trigger(self::EVENT_SESSION_START, $sessionEvent);
+        }
         
         return $return;
     }
@@ -63,10 +65,12 @@ class Session extends Component
             }
             
             $return = $today->save();
-            
-            $sessionEvent = new SessionEvent(['model' => $today]);
-            $this->trigger(self::EVENT_SESSION_STOP, $sessionEvent);
-            
+
+            if(!$for) {
+                $sessionEvent = new SessionEvent(['model' => $today]);
+                $this->trigger(self::EVENT_SESSION_STOP, $sessionEvent);
+            }
+
             return $return;
         }
     }
