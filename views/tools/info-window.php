@@ -7,6 +7,8 @@ use yii\helpers\Url;
 <p><strong>Стоп</strong>: <?php if($session->stop_timestamp) echo date('d.m.Y H:i:s', $session->stop_timestamp); else echo '-';?></p>
 <p><strong>Продолжительность</strong>: <?=$session->getDuration();?></p>
 <p><strong>Редактировать</strong>: <a href="<?=Url::toRoute(['/worksess/user-session/update', 'id' => $session->id]);?>"><i class="glyphicon glyphicon-pencil"></i></a></p>
+<p><strong>Удалить период</strong>: <a href="<?=Url::toRoute(['/worksess/user-session/delete', 'id' => $session->id]);?>" data-confirm="Вы уверены, что хотите удалить этот период?" style="color: red;" data-method="post"><i class="glyphicon glyphicon-remove"></i></a></p>
+
 <hr style="clear: both;" />
 
 <table class="table table-hover table-responsive">

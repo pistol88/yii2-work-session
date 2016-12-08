@@ -33,6 +33,15 @@ class UserSessionController extends Controller
         ];
     }
 
+    public function actionDelete($id)
+    {
+        if($model = $this->findModel($id)) {
+            $model->delete();
+        }
+
+        return $this->redirect(Yii::$app->request->referrer);
+    }
+
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);

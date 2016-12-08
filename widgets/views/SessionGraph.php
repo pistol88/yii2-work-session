@@ -61,6 +61,7 @@ use yii\widgets\Pjax;
                         <td class="control">
                             <?=ControlButton::widget(['for' => $worker]);?>
                         </td>
+
                     <?php } ?>
                 </tr>
                 <?php if($control) { ?>
