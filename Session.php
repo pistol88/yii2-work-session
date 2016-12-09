@@ -58,7 +58,7 @@ class Session extends Component
             $today->stop = date('Y-m-d H:i:s');
             
             if(!$for) {
-                foreach($today->userSessions as $userSession) {
+                foreach($today->openedUserSessions as $userSession) {
                     $userSession->stop = date('Y-m-d H:i:s');
                     $userSession->save();
                 }

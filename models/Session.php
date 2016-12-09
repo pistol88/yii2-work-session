@@ -90,7 +90,12 @@ class Session extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UserSession::className(), ['session_id' => 'id']);
     }
-	
+
+    public function getOpenedUserSessions()
+    {
+        return $this->hasMany(UserSession::className(), ['session_id' => 'id'])->andOnCondition(['stop' => null]);
+    }
+
     public function beforeSave($insert)
     {
         if($this->start) {
