@@ -93,6 +93,15 @@ class Session extends Component
         return SessionModel::findAll(['DATE_FORMAT(start, "%Y-%m-%d")' => date('Y-m-d')]);
     }
     
+    public function last($for = null)
+    {
+        if($for) {
+            return UserSession::find()->where(['user_id' => $for->getId()])->orderBy('stop DESC')->one();
+        }
+
+        return SessionModel::find()->orderBy('stop DESC')->one();
+    }
+    
     public function getSessions($for = null, $date = null)
     {
         if(!$date) {
