@@ -102,6 +102,15 @@ class Session extends Component
         return SessionModel::find()->orderBy('stop DESC')->one();
     }
     
+    public function getSessionsByDatePeriod($dateStart, $dateStop = null)
+    {
+        if(!$dateStop) {
+            $dateStop = date('Y-m-d');
+        }
+
+        return SessionModel::find()->where('DATE_FORMAT(start, "%Y-%m-%d") >= :dateStart AND DATE_FORMAT(start, "%Y-%m-%d") <= :dateStop', ['dateStart' => $dateStart, 'dateStop' => $dateStop])->all();
+    }
+    
     public function getSessions($for = null, $date = null)
     {
         if(!$date) {
