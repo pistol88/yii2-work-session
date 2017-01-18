@@ -50,7 +50,7 @@ class Session extends Component
         return $return;
     }
     
-    public function stop($for)
+    public function stop($for = null)
     {
         if(!$today = $this->soon($for)) {
             return false;
