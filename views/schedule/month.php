@@ -10,7 +10,7 @@ $monthDays = range(1, $daysCount);
 
 $this->title = $month.' '.$y.' - график работ';
 
-$this->params['breadcrumbs'][] = ['label' => 'Раписание', 'url' => ['/worksess/schedule/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Расписание', 'url' => ['/worksess/schedule/index']];
 $this->params['breadcrumbs'][] = $month;
 
 $shifts = $module->shifts;
