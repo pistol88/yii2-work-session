@@ -28,7 +28,7 @@ class ControlButton extends \yii\base\Widget
         }
         
         if(yii::$app->worksess->soon($this->for)) {
-            return Html::a($this->stopText, ['/worksess/session/stop', 'userId' => $userId], ['data-user-id' => $userId, 'class' => 'worksess-button worksess-stop btn btn-danger']);
+            return Html::a($this->stopText, ['/worksess/session/stop', 'userId' => $userId], ['data-role' => ($userId == null) ? 'main-session' : '','data-user-id' => $userId, 'class' => 'worksess-button worksess-stop btn btn-danger']);
         } else {
             if($this->for) {
                 return Html::a($this->startText, ['/worksess/session/start', 'userId' => $userId], ['data-user-id' => $userId, 'class' => 'worksess-button worksess-start btn btn-success']);
@@ -38,7 +38,7 @@ class ControlButton extends \yii\base\Widget
                 $buttons = [];
 
                 foreach($shifts as $shiftId => $shiftName) {
-                    $buttons[] = Html::a($this->startText . ' (' . $shiftName . ')', ['/worksess/session/start', 'userId' => $userId, 'shift' => $shiftId], ['data-shift' => $shiftId, 'data-user-id' => $userId, 'class' => 'worksess-button worksess-start btn btn-success']);
+                    $buttons[] = Html::a($this->startText . ' (' . $shiftName . ')', ['/worksess/session/start', 'userId' => $userId, 'shift' => $shiftId], ['data-role' => ($userId == null) ? 'main-session' : '','data-shift' => $shiftId, 'data-user-id' => $userId, 'class' => 'worksess-button worksess-start btn btn-success']);
                 }
 
                 return implode(' ', $buttons);
